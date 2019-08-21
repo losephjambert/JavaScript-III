@@ -25,7 +25,7 @@ GameObject.prototype.destroy = function() {
   return `${this.name} was removed from the game.`;
 };
 
-const myGameObject = new GameObject({
+const test_GameObject = new GameObject({
   createdAt: new Date(),
   name: 'game_obj_1',
   dimensions: {
