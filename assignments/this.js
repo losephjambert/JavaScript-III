@@ -27,31 +27,50 @@
 function helloGlobal(phrase) {
   return [phrase, this];
 }
-console.log(helloGlobal("Hello Global 👋"));
+console.log(helloGlobal('Hello Global 👋'));
 
 // Principle 2
 
 // code example for Implicit Binding
 const person = {
-  name: "Joe",
-  favorite_food: "pizza",
-  favorite_exercise: "swimming",
+  name: 'Joe',
+  favorite_food: 'pizza',
+  favorite_exercise: 'swimming',
   location: {
-    city: "Seattle",
-    state: "Washington",
-    country: "USA",
-    planet: "Earth 2, the sequel to Earth"
+    city: 'Seattle',
+    state: 'Washington',
+    country: 'USA',
+    planet: 'Earth 2, the sequel to Earth',
   },
   speak: function() {
     return `My name is ${this.name}. I enjoy eating ${this.favorite_food}. I'm from a city called ${this.location.city},
     in the state of ${this.location.state} on the planet ${this.location.planet}. Have a nice day.`;
-  }
+  },
 };
 console.log(person.speak());
 
 // Principle 3
 
 // code example for New Binding
+function User(attributes) {
+  this.name = attributes.name;
+  this.role = attributes.role;
+  this.email = attributes.email;
+  this.username = attributes.username;
+}
+
+User.prototype.description = function() {
+  return `${this.name} is a ${this.role}`;
+};
+
+const user_1234 = new User({
+  name: 'Bob Ross',
+  role: 'painter',
+  email: 'bob.ross@paints.fun',
+  username: 'bor_boss',
+});
+
+console.log(user_1234.description());
 
 // Principle 4
 
