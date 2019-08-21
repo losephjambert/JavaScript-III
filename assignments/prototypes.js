@@ -35,7 +35,7 @@ const myGameObject = new GameObject({
   },
 });
 
-console.log(myGameObject.destroy());
+console.log(myGameObject.destroy(0));
 
 /*
   === CharacterStats ===
