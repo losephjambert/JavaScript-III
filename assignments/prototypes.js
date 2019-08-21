@@ -35,6 +35,8 @@ const test_GameObject = new GameObject({
   },
 });
 
+console.log(test_GameObject);
+
 /*
 === CharacterStats ===
 * healthPoints
