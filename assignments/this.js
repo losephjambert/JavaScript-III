@@ -75,3 +75,19 @@ console.log(user_1234.description());
 // Principle 4
 
 // code example for Explicit Binding
+const pet = {
+  name: 'Batman',
+  species: 'dog',
+  breed: 'labradoodle',
+  weight: '55lbs',
+  favorite_food: 'Chicken',
+  sound: 'honk honk',
+};
+
+function makeSound() {
+  return `${this.name} is a ${this.species} who eats ${this.favorite_food} and likes to say: ${this.sound}!`;
+}
+
+console.log(makeSound.call(pet));
+const myPetSounds = makeSound.bind(pet);
+console.log(myPetSounds());
