@@ -52,8 +52,8 @@ function CharacterStats(attributes) {
 CharacterStats.prototype = Object.create(GameObject.prototype);
 CharacterStats.prototype.takeDamage = function(damage) {
   this.healthPoints -= damage;
-  `${this.name} took ${damage} damage`;
-  if (this.healthPoints <= 0) this.destroy();
+  if (this.healthPoints <= 0) return this.destroy();
+  return `${this.name} took ${damage} damage`;
 };
 
 const test_Character = new CharacterStats({
@@ -95,6 +95,13 @@ function Humanoid(attributes) {
 Humanoid.prototype = Object.create(CharacterStats.prototype);
 Humanoid.prototype.greet = function() {
   return `${this.name} offers a greeting in ${this.language}.`;
+};
+Humanoid.prototype.attack = function(target, damage) {
+  return `
+  ${this.name} attacks ${target.name} for ${damage} damage!
+  ${target.name}'s health is now ${target.healthPoints}.
+  ${target.takeDamage(damage)}
+  `;
 };
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
@@ -149,7 +156,7 @@ console.log(swordsman.team); // The Round Table
 console.log(mage.weapons); // Staff of Shamalama
 console.log(archer.language); // Elvish
 console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-console.log(mage.takeDamage()); // Bruce took damage.
+console.log(mage.takeDamage(5)); // Bruce took damage.
 console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 
 // Stretch task:
@@ -163,13 +170,6 @@ function Villain(attributes) {
 }
 
 Villain.prototype = Object.create(Humanoid.prototype);
-Villain.prototype.attack = function(hero, damage) {
-  hero.takeDamage(damage);
-  return `
-  ${this.name} attacks ${hero.name} for ${damage} damage!
-  ${hero.name}'s health is now ${hero.healthPoints}.
-  `;
-};
 
 function Hero(attributes) {
   Humanoid.call(this, attributes);
@@ -177,13 +177,6 @@ function Hero(attributes) {
 }
 
 Hero.prototype = Object.create(Humanoid.prototype);
-Hero.prototype.attack = function(villain, damage) {
-  villain.takeDamage(damage);
-  return `
-  ${this.name} attacks ${villain.name} for ${damage} damage!
-  ${villain.name}'s health is now ${villain.healthPoints}.
-  `;
-};
 
 const baddie = new Villain({
   createdAt: new Date(),
@@ -197,6 +190,7 @@ const baddie = new Villain({
   team: '666',
   weapons: ['Eldritch Gauntlet'],
   language: 'Romanian',
+  isVillain: true,
 });
 
 const goodie = new Hero({
@@ -211,4 +205,12 @@ const goodie = new Hero({
   team: 'Forest Kingdom',
   weapons: ['Whip'],
   language: 'Hungarian',
+  isHero: true,
 });
+
+console.log(baddie);
+console.log(goodie);
+
+console.log(baddie.attack(goodie, 5));
+console.log(goodie.attack(baddie, 12));
+console.log(goodie.attack(baddie, 9));
