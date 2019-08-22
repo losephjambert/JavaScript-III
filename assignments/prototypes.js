@@ -53,7 +53,10 @@ CharacterStats.prototype = Object.create(GameObject.prototype);
 CharacterStats.prototype.takeDamage = function(damage) {
   this.healthPoints -= damage;
   if (this.healthPoints <= 0) return this.destroy();
-  return `${this.name} took ${damage} damage`;
+  return `
+  ${this.name} took ${damage} damage.
+  ${this.name}'s health is now ${this.healthPoints}.
+  `;
 };
 
 const test_Character = new CharacterStats({
@@ -99,7 +102,6 @@ Humanoid.prototype.greet = function() {
 Humanoid.prototype.attack = function(target, damage) {
   return `
   ${this.name} attacks ${target.name} for ${damage} damage!
-  ${target.name}'s health is now ${target.healthPoints}.
   ${target.takeDamage(damage)}
   `;
 };
@@ -213,4 +215,5 @@ console.log(goodie);
 
 console.log(baddie.attack(goodie, 5));
 console.log(goodie.attack(baddie, 12));
+console.log(baddie.attack(goodie, 9));
 console.log(goodie.attack(baddie, 9));
