@@ -50,8 +50,10 @@ function CharacterStats(attributes) {
 }
 
 CharacterStats.prototype = Object.create(GameObject.prototype);
-CharacterStats.prototype.takeDamage = function() {
-  return `${this.name} took damage`;
+CharacterStats.prototype.takeDamage = function(damage) {
+  this.healthPoints -= damage;
+  `${this.name} took ${damage} damage`;
+  if (this.healthPoints <= 0) this.destroy();
 };
 
 const test_Character = new CharacterStats({
@@ -154,3 +156,59 @@ console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
 // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
 // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+function Villain(attributes) {
+  Humanoid.call(this, attributes);
+  this.isVillain = attributes.isVillain;
+}
+
+Villain.prototype = Object.create(Humanoid.prototype);
+Villain.prototype.attack = function(hero, damage) {
+  hero.takeDamage(damage);
+  return `
+  ${this.name} attacks ${hero.name} for ${damage} damage!
+  ${hero.name}'s health is now ${hero.healthPoints}.
+  `;
+};
+
+function Hero(attributes) {
+  Humanoid.call(this, attributes);
+  this.isHero = attributes.isHero;
+}
+
+Hero.prototype = Object.create(Humanoid.prototype);
+Hero.prototype.attack = function(villain, damage) {
+  villain.takeDamage(damage);
+  return `
+  ${this.name} attacks ${villain.name} for ${damage} damage!
+  ${villain.name}'s health is now ${villain.healthPoints}.
+  `;
+};
+
+const baddie = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2,
+    width: 2,
+    height: 6,
+  },
+  healthPoints: 20,
+  name: 'Dracula',
+  team: '666',
+  weapons: ['Eldritch Gauntlet'],
+  language: 'Romanian',
+});
+
+const goodie = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 1,
+    width: 2,
+    height: 5,
+  },
+  healthPoints: 15,
+  name: 'Alucard',
+  team: 'Forest Kingdom',
+  weapons: ['Whip'],
+  language: 'Hungarian',
+});
